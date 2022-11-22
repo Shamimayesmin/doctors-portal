@@ -3,59 +3,57 @@ import { format } from "date-fns";
 import { AuthContext } from "../../../context/AuthProvider";
 import toast from "react-hot-toast";
 
-const BookingModal = ({ treatment, selectedDate,setTreatment,refetch }) => {
-	const { name : treatmentName, slots,price } = treatment; // treatment is appointment options
+const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
+	const { name: treatmentName, slots, price } = treatment; // treatment is appointment options
 	const date = format(selectedDate, "PP");
 
-	const {user} = useContext(AuthContext)
+	const { user } = useContext(AuthContext);
 
-    const handleBookin = event=>{
-        event.preventDefault()
+	const handleBookin = (event) => {
+		event.preventDefault();
 
-        const form = event.target;
-        const name = form.name.value;
-        const slot = form.slot.value;
-        const email = form.email.value;
-        const phone = form.phone.value;
+		const form = event.target;
+		const name = form.name.value;
+		const slot = form.slot.value;
+		const email = form.email.value;
+		const phone = form.phone.value;
 
-        console.log(date, name, slot, email, phone);
-        const booking={
-            appointmentDate : date,
-            treatment : treatmentName,
-            patient : name,
-            slot,
-            email,
-            phone,
-			price
-        }
+		console.log(date, name, slot, email, phone);
+		const booking = {
+			appointmentDate: date,
+			treatment: treatmentName,
+			patient: name,
+			slot,
+			email,
+			phone,
+			price,
+		};
 
-        // TODO : send data to the server
-        // and once data is saved then close the modal
-        // and display toast
+		// TODO : send data to the server
+		// and once data is saved then close the modal
+		// and display toast
 
-		fetch('http://localhost:5000/bookings' , {
-			method : 'POST',
-			headers : {
-				'content-type' : 'application/json'
+		fetch("https://doctors-portal-server-pearl.vercel.app/bookings", {
+			method: "POST",
+			headers: {
+				"content-type": "application/json",
 			},
-			body : JSON.stringify(booking)
+			body: JSON.stringify(booking),
 		})
-		.then(res => res.json())
-		.then(data => {
-			console.log(data);
-			if(data.acknowledged){
-			setTreatment(null)
-			toast.success('booking confirmed')
-			refetch()
-			}
-			else{
-				toast.error(data.message)
-			}
-			
-		})
-        // console.log(booking);
-        // setTreatment(null)
-    }
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+				if (data.acknowledged) {
+					setTreatment(null);
+					toast.success("booking confirmed");
+					refetch();
+				} else {
+					toast.error(data.message);
+				}
+			});
+		// console.log(booking);
+		// setTreatment(null)
+	};
 	return (
 		<>
 			<input type="checkbox" id="booking-modal" className="modal-toggle" />
@@ -69,7 +67,10 @@ const BookingModal = ({ treatment, selectedDate,setTreatment,refetch }) => {
 					</label>
 					<h3 className="text-lg font-bold">{treatmentName}</h3>
 
-					<form onSubmit={handleBookin} className="grid grid-cols-1 gap-3 mt-10">
+					<form
+						onSubmit={handleBookin}
+						className="grid grid-cols-1 gap-3 mt-10"
+					>
 						<input
 							type="text"
 							value={date}
@@ -77,14 +78,14 @@ const BookingModal = ({ treatment, selectedDate,setTreatment,refetch }) => {
 							disabled
 						/>
 						<select name="slot" className="select select-bordered w-full">
-							
-							{
-                                slots.map((slot ,i) => <option value={slot} key={i}>{slot}</option>
-                                )
-                            }
+							{slots.map((slot, i) => (
+								<option value={slot} key={i}>
+									{slot}
+								</option>
+							))}
 						</select>
 						<input
-                            name="name"
+							name="name"
 							type="text"
 							placeholder="Your name"
 							defaultValue={user?.displayName}
@@ -92,7 +93,7 @@ const BookingModal = ({ treatment, selectedDate,setTreatment,refetch }) => {
 							className="input input-bordered w-full"
 						/>
 						<input
-                            name="email"
+							name="email"
 							type="email"
 							placeholder="Email address"
 							defaultValue={user?.email}
@@ -100,7 +101,7 @@ const BookingModal = ({ treatment, selectedDate,setTreatment,refetch }) => {
 							className="input input-bordered w-full"
 						/>
 						<input
-                            name="phone"
+							name="phone"
 							type="number"
 							placeholder="Phone number"
 							className="input input-bordered w-full"

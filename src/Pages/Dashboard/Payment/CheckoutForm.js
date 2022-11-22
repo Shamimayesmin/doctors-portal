@@ -11,18 +11,21 @@ const CheckoutForm = ({ booking }) => {
 	const stripe = useStripe();
 	const elements = useElements();
 
-	const { price, email, patient ,_id} = booking;
+	const { price, email, patient, _id } = booking;
 
 	useEffect(() => {
 		// Create PaymentIntent as soon as the page loads
-		fetch("http://localhost:5000/create-payment-intent", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				authorization: `bearer ${localStorage.getItem("accessToken")}`,
-			},
-			body: JSON.stringify({ price }),
-		})
+		fetch(
+			"https://doctors-portal-server-pearl.vercel.app/create-payment-intent",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					authorization: `bearer ${localStorage.getItem("accessToken")}`,
+				},
+				body: JSON.stringify({ price }),
+			}
+		)
 			.then((res) => res.json())
 			.then((data) => setClientSecret(data.clientSecret));
 	}, [price]);
@@ -71,19 +74,17 @@ const CheckoutForm = ({ booking }) => {
 			return;
 		}
 		if (paymentIntent.status === "succeeded") {
-            console.log('card info', card);
-			
+			console.log("card info", card);
+
 			// store payment info in the database
 			const payment = {
-                price,
-                transactionId : paymentIntent.id,
-                email,
-                bookingId : _id
+				price,
+				transactionId: paymentIntent.id,
+				email,
+				bookingId: _id,
+			};
 
-            };
-
-
-			fetch("http://localhost:5000/payments", {
+			fetch("https://doctors-portal-server-pearl.vercel.app/payments", {
 				method: "POST",
 				headers: {
 					"content-type": "application/json",
@@ -93,7 +94,7 @@ const CheckoutForm = ({ booking }) => {
 			})
 				.then((res) => res.json())
 				.then((data) => {
-                    console.log(data);
+					console.log(data);
 					if (data.insertId) {
 						setSuccess("Congrats ! your payment complete");
 						setTransactionId(paymentIntent.id);
