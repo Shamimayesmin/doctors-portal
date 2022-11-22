@@ -5,9 +5,9 @@ import { useNavigation } from "react-day-picker";
 import { useLoaderData } from "react-router-dom";
 import Loading from "../../Shared/Loading/Loading";
 import CheckoutForm from "./CheckoutForm";
-// const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
 // const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
-const stripePromise = loadStripe('pk_test_51M64rCLJkOoDCtuirWeq0rKwipHEg7kvH51gjmzmD2nXnUCtUOBvr2ReyiGwapUKjk3QitfrpenXSA1a60QhDyPE00ysG9ED4j');
+// const stripePromise = loadStripe('pk_test_51M64rCLJkOoDCtuirWeq0rKwipHEg7kvH51gjmzmD2nXnUCtUOBvr2ReyiGwapUKjk3QitfrpenXSA1a60QhDyPE00ysG9ED4j');
 
 
 const Payment = () => {
