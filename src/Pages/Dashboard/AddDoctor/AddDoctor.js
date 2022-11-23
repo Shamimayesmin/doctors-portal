@@ -34,6 +34,7 @@ const AddDoctor = () => {
 		const formData = new FormData();
 		formData.append("image", image);
 		const url = `https://api.imgbb.com/1/upload?key=${imagehostkey}`;
+		console.log(url);
 		fetch(url, {
 			method: "POST",
 			body: formData,

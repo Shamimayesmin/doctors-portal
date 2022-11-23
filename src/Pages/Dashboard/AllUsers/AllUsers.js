@@ -18,7 +18,7 @@ const AllUsers = () => {
 		fetch(`https://doctors-portal-server-pearl.vercel.app/users/admin/${id}`, {
 			method: "PUT",
 			headers: {
-				authorization: `bearer ${localStorage.getItem("access token")}`,
+				authorization: `bearer ${localStorage.getItem("accessToken")}`,
 			},
 		})
 			.then((res) => res.json())
